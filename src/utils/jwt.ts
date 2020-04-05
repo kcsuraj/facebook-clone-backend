@@ -10,7 +10,7 @@ const { ACCESS_TOKEN_DURATION } = constats;
  * @param {*} data
  * @returns {string}
  */
-export function generateAccessToken(data): string {
+export function generateAccessToken(data: any): string {
   return jwt.sign(data, JWT_SECRET, {
     expiresIn: ACCESS_TOKEN_DURATION
   });
