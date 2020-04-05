@@ -4,8 +4,8 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import { MONGO_URI } from './utils/secrets';
 import router from './router';
-import { register } from './modules/auth/authController';
-import authRouter from './modules/auth/authRouter';
+import graphqlHTTP from 'express-graphql';
+import { buildSchema } from 'graphql';
 
 // Create Express server
 const app = express();
@@ -27,6 +27,26 @@ mongoose
   .catch((err) => {
     console.log('MongoDB connection error. Please make sure MongoDB is running. ' + err);
   });
+
+// Initialize graphql schema
+const schema = buildSchema(`
+    type Query{
+      hello: String
+    }
+  `);
+
+const root = {
+  hello: () => 'Hello World'
+};
+
+app.use(
+  '/graphql',
+  graphqlHTTP({
+    schema, // Must be provided
+    rootValue: root,
+    graphiql: true // Enable GraphiQL when server endpoint is accessed in browser
+  })
+);
 
 app.set('port', process.env.PORT || 5200);
 
