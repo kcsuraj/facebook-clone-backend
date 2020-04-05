@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import Users from '../user/userModal';
+import { generateAccessToken } from '../../utils/jwt';
 
 export function register(req: Request, res: Response, next: NextFunction) {
   console.log(req.body);
